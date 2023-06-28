@@ -12,7 +12,21 @@ class UsersController < ApplicationController
     
       private
     
+      
+      
       def user_params
         params.require(:user).permit(:username, :password, :password_confirmation, :image_url, :bio)
+      end
+      
     end
+
+
+  def show
+    if logged_in?
+      user = User.find(session[:user_id])
+      render json: user, status: :ok
+    else
+      render json: { error: "Unauthorized" }, status: :unauthorized
+    end
+  end
 end
